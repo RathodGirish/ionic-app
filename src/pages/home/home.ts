@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, IonicPage } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { SearchPage } from '../search/search';
  
 @IonicPage()
 @Component({
@@ -20,6 +21,12 @@ export class HomePage {
       this.nav.setRoot('LoginPage');
     }
     // this.showError(JSON.stringify(info));
+  }
+
+  public searchBy(search: any){
+    this.nav.push(SearchPage, {
+        searchBy: search
+    });
   }
  
   public logout() {

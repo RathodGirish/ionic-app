@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>
+      Search Item By {{searchBy}}
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content class="page-content" padding *ngIf="info != null">
+  <div class="content-box">
+    <form (ngSubmit)="login()" #posObject="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+            
+            <ion-item>
+              <ion-input type="text" placeholder="Description" name="email" [(ngModel)]="posObject.description" required></ion-input>
+            </ion-item>
+            
+            <ion-item>
+              <ion-input type="text" placeholder="Department" name="password" [(ngModel)]="posObject.department" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="UPC Code" name="password" [(ngModel)]="posObject.upcCode" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Current Price" name="password" [(ngModel)]="posObject.currentPrice" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="New Price" name="password" [(ngModel)]="posObject.newPrice" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Update Inventory" name="password" [(ngModel)]="posObject.updateInventory" required></ion-input>
+            </ion-item>
+            
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col class="action-col">
+          <!--<button ion-button class="success-btn" (click)="back()">Cancel</button>-->
+          
+          <button ion-button class="success-btn" (click)="sendToPOS()" type="submit" [disabled]="!posObject.form.valid">Send to POS</button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-row>
+        <ion-col class="action-col">
+          <button ion-button class="primary-btn" (click)="popView()">Cancel</button>
+        </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

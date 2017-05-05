@@ -15,10 +15,10 @@
   <h3>Welcome, {{info.username}}!</h3>
 
   <ion-row>
-    <ion-col class="signup-col">
-      <button ion-button class="submit-btn" full>Description</button>
+    <ion-col class="action-col">
+      <button ion-button class="success-btn" full (click)="searchBy('Description')">Description</button>
       <h4 class='text-center'>OR</h4>
-      <button ion-button class="submit-btn" full (click)="createAccount()">Scanner</button>
+      <button ion-button class="primary-btn" full (click)="searchBy('Scanner')">Scanner</button>
     </ion-col>
   </ion-row>
 </ion-content>
