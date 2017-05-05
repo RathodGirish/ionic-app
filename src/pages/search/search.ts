@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, IonicPage, NavParams} from 'ionic-angular';
+import { NavController, AlertController, IonicPage, NavParams } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
- 
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 @IonicPage()
 @Component({
   selector: 'page-search',
@@ -9,34 +11,104 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class SearchPage {
   searchBy = '';
-  info : any = {};
+  info: any = {};
   posObject = { description: '', department: '', upcCode: '', currentPrice: '', newPrice: "", updateInventory: "" };
-
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams) {
+  currentPriceList = [];
+  departmentList = [];
+  description: any[] = [];
+  currentItems: any[] = [];
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http) {
+    let THIS = this;
     this.info = this.auth.getUserInfo();
     console.log(' info ' + JSON.stringify(this.info));
-    
-    if(this.info == null){
+
+    if (this.info == null) {
       this.showError('Please login first');
       this.nav.setRoot('LoginPage');
     }
 
+    // let url = 'http://192.169.176.227/backofficeweb/?action=cprize';
+    // let response = this.http.get(url).map(res => res.json());
+    // console.log("response : " +  JSON.stringify(response));
+    this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=cprize&store_id=" + this.info.store_id, function (err, res) {
+      if (err) {
+        console.log("ERROR!: ", err);
+      } else {
+        THIS.currentPriceList = res.message;
+        console.log("THIS.currentPriceList " + THIS.currentPriceList);
+      }
+    });
+
+    this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=department&store_id=" + this.info.store_id, function (err, res) {
+      if (err) {
+        console.log("ERROR!: ", err);
+      } else {
+        THIS.departmentList = res.message;
+        console.log("THIS.departmentList " + THIS.departmentList);
+      }
+    });
+   
+    this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=description&store_id=" + this.info.store_id, function (err, res) {
+      if (err) {
+        console.log("ERROR!: ", err);
+      } else {
+        THIS.description = res.message;
+        console.log("THIS.departmentList " + JSON.stringify(THIS.description));
+      }
+    });
+
     this.searchBy = this.navParams.get('searchBy');
   }
- 
+
+  getItems(ev) {
+    let val = ev.target.value;
+    console.log(' val1'  + val);
+    if (!val || !val.trim()) {
+      this.currentItems = [];
+      return;
+    }
+    console.log(' val'  + val);
+    // this.currentItems = this.descItems.query({
+    //   name: val
+    // });
+    // this.currentItems = this.description.filter((v) => {
+
+    //     if (v.toLowerCase().indexOf(val.toLowerCase()) > -1) {
+    //       return true;
+    //       }
+
+    //       return false;
+    //     })
+  }
+
   public logout() {
     this.auth.logout().subscribe(succ => {
       this.nav.setRoot('LoginPage');
     });
   }
 
-  public back(){
+  public GetDataByURL(url, callback) {
+    this.http
+      .get(url)
+      .map(res => res.json())
+      .subscribe(
+      data => {
+        // console.log('response data  ' + JSON.stringify(data));
+        callback(null, data);
+      },
+      err => {
+        callback(err, null);
+        console.log("ERROR!: ", err);
+      });
+  }
+
+  public back() {
     // this.nav.setRoot('HomePage');
   }
 
-  popView(){
-     this.nav.pop();
-   }
+  popView() {
+    this.nav.pop();
+  }
 
   showError(text) {
     let alert = this.alertCtrl.create({
