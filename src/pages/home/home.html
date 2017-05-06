@@ -1,7 +1,8 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      Search Item By
+      <span class='header-title'>Welcome, {{info.username}}!</span>
+      <span class='header-title'>Search Item By</span>
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="logout()">
@@ -12,9 +13,6 @@
 </ion-header>
  
 <ion-content class="home" padding *ngIf="info != null">
-  <h3>Welcome, {{info.username}}!</h3>
-  
-
   <ion-row>
     <ion-col class="action-col">
       <button ion-button class="success-btn" full (click)="searchBy('Description')">Description</button>
