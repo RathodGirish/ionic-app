@@ -10,7 +10,7 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class LoginPage {
   loading: Loading;
-  loginCredentials = { email: '', password: '', type: 'company' };
+  loginCredentials = { email: 'texonoil@gmail.com', password: 'tex@123', type: 'company' };
   typeList: any[] = [{ value: 1, text: 'option 1', checked: false }, { value: 2, text: 'option 2', checked: false }];
  
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private http: Http) { 
@@ -29,7 +29,6 @@ export class LoginPage {
         let headers = new Headers({});
         let options = new RequestOptions({ headers: headers });
         console.log(' this.loginCredentials ' + this.loginCredentials);
-        // this.showError(JSON.stringify(this.loginCredentials));
         this.http
             .post('http://192.169.176.227/backofficeweb/', body, options)
             .map(res => res.json())
@@ -47,17 +46,6 @@ export class LoginPage {
                   console.log("ERROR!: ", err);
                 }
             );
-
-    // this.auth.login(this.loginCredentials, this.http).subscribe(allowed => {
-    //   if (allowed) {        
-    //     this.nav.setRoot('HomePage');
-    //   } else {
-    //     this.showError("Access Denied");
-    //   }
-    // },
-    //   error => {
-    //     this.showError(error);
-    //   });
   }
  
   showLoading() {

@@ -13,45 +13,45 @@
 
 <ion-content class="page-content" padding *ngIf="info != null">
   <div class="content-box">
-    <form (ngSubmit)="sendToPOS()" #posObject="ngForm">
+    <form (ngSubmit)="sendToPOS($event, posForm.value, posForm.valid)" #posForm="ngForm">
       <ion-row>
         <ion-col>
           <ion-list inset>
 
-            <ion-item *ngIf="description && description.length > 0">
+            <ion-item >
               <ion-label>Description</ion-label>
-              <ion-select name="type" [(ngModel)]="posObject.description">
+              <ion-select name="description" [(ngModel)]="posObject.description" [disabled]="!description && !description.length > 0" required>
                 <ion-option *ngFor="let key of description">{{key}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item *ngIf="departmentList && departmentList.length > 0" required>
+            <ion-item>
               <ion-label>Department</ion-label>
-              <ion-select name="type" [(ngModel)]="posObject.department">
+              <ion-select name="department" [(ngModel)]="posObject.department" [disabled]="!departmentList && !departmentList.length > 0" required>
                 <ion-option *ngFor="let key of departmentList" value="{{key.dept_id}}">{{key.department_name}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item *ngIf="currentPriceList && currentPriceList.length > 0" required>
+            <ion-item>
               <ion-label>UPC Code</ion-label>
-              <ion-select name="type" [(ngModel)]="posObject.upcCode">
+              <ion-select name="plu_no" [(ngModel)]="posObject.plu_no" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
                 <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.plu_no}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item *ngIf="currentPriceList && currentPriceList.length > 0" required>
+            <ion-item>
               <ion-label>Current Price</ion-label>
-              <ion-select name="type" [(ngModel)]="posObject.currentPrice">
+              <ion-select name="current_price" [(ngModel)]="posObject.current_price" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
                 <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.price}}</ion-option>
               </ion-select>
             </ion-item>
 
             <ion-item>
-              <ion-input type="number" placeholder="New Price" name="password" [(ngModel)]="posObject.newPrice" required></ion-input>
+              <ion-input type="number" placeholder="New Price" name="new_rice" [(ngModel)]="posObject.new_rice" required="true"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input type="number" placeholder="Update Inventory" name="password" [(ngModel)]="posObject.updateInventory" required></ion-input>
+              <ion-input type="number" placeholder="Update Inventory" name="update_inventory" [(ngModel)]="posObject.update_inventory" required="true"></ion-input>
             </ion-item>
 
           </ion-list>
@@ -60,7 +60,7 @@
 
       <ion-row>
         <ion-col class="action-col">
-          <button ion-button class="success-btn" type="submit" [disabled]="!posObject.form.valid">Send to POS</button>
+          <button ion-button class="success-btn" type="submit" [disabled]="!posForm.valid">Send to POS</button>
         </ion-col>
       </ion-row>
     </form>

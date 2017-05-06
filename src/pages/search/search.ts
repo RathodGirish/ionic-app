@@ -102,17 +102,49 @@ export class SearchPage {
       });
   }
 
-  public back() {
-    // this.nav.setRoot('HomePage');
-  }
+  public sendToPOS(event: any, pos: any, isValid: boolean){
+    event.preventDefault();
+    console.log(' pos ' + JSON.stringify(pos) + ' isValid ' + isValid);
+    if(isValid){
 
-  popView() {
+      let updatePosURL = 'http://192.169.176.227/backofficeweb/?action=updateiteam&plu_no=' + pos.plu_no + '&description=' + pos.description + '&new_price=' + pos.new_rice + '&update_inventory=' + pos.update_inventory;
+      console.log(' updatePosURL ' + JSON.stringify(updatePosURL));
+      this.http
+          .get(updatePosURL)
+          .map(res => res.json())
+          .subscribe(
+              data => {
+                console.log('updatePos data  ' + JSON.stringify(data));
+                if(data.status == 1){
+                  this.showSucess('POS Updated Successfully');
+                  this.popView();
+                } else {
+                  this.showError('Fail to Update POS');
+                }
+              },
+              err => {
+                console.log("ERROR!: ", err);
+              }
+          );
+    }
+  }
+  
+  public popView() {
     this.nav.pop();
   }
 
-  showError(text) {
+  public showError(text) {
     let alert = this.alertCtrl.create({
       title: 'Fail',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present(prompt);
+  }
+
+  public showSucess(text) {
+    let alert = this.alertCtrl.create({
+      title: 'Success',
       subTitle: text,
       buttons: ['OK']
     });
