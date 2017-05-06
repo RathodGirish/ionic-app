@@ -19,12 +19,21 @@
         <ion-col>
           <ion-list inset>
 
-            <ion-item >
+            <ion-item class='autocomplete-item'>
+              <ion-searchbar placeholder="Description" name="description" [(ngModel)]="posObject.description" (ionInput)="searchDescription($event)"></ion-searchbar>
+            </ion-item>
+            <ion-list *ngIf="showList" class='autocomplete-list'>
+              <ion-item *ngFor="let item of newDescriptionList" class='autocomplete-item radius-0' (click)="selectDesc($event, item)">
+                {{ item }}
+              </ion-item>
+            </ion-list>
+
+            <!--<ion-item >
               <ion-label>Description</ion-label>
               <ion-select name="description" [(ngModel)]="posObject.description" [disabled]="!description && !description.length > 0" required>
                 <ion-option *ngFor="let key of description">{{key}}</ion-option>
               </ion-select>
-            </ion-item>
+            </ion-item>-->
 
             <ion-item>
               <ion-label>Department</ion-label>

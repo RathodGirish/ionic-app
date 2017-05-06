@@ -15,8 +15,13 @@ export class SearchPage {
   posObject = { description: '', department: '', upcCode: '', currentPrice: '', newPrice: "", updateInventory: "" };
   currentPriceList = [];
   departmentList = [];
-  description: any[] = [];
+  descriptionList = [];
+  newDescriptionList = [];
   currentItems: any[] = [];
+  showList: boolean = false;
+  searchQuery: string = '';
+  items: string[];
+
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http) {
     let THIS = this;
     this.info = this.auth.getUserInfo();
@@ -27,9 +32,6 @@ export class SearchPage {
       this.nav.setRoot('LoginPage');
     }
 
-    // let url = 'http://192.169.176.227/backofficeweb/?action=cprize';
-    // let response = this.http.get(url).map(res => res.json());
-    // console.log("response : " +  JSON.stringify(response));
     this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=cprize&store_id=" + this.info.store_id, function (err, res) {
       if (err) {
         console.log("ERROR!: ", err);
@@ -52,33 +54,45 @@ export class SearchPage {
       if (err) {
         console.log("ERROR!: ", err);
       } else {
-        THIS.description = res.message;
-        console.log("THIS.departmentList " + JSON.stringify(THIS.description));
+        THIS.descriptionList = res.message;
+        console.log("THIS.descriptionList " + JSON.stringify(THIS.descriptionList));
       }
     });
 
     this.searchBy = this.navParams.get('searchBy');
+
+    this.initializeItems();
   }
 
-  getItems(ev) {
+  public searchDescription(ev: any) {
+    // Reset descriptionList back to all of the items
+    //this.initializeItems();
+
+    // set val to the value of the searchbar
     let val = ev.target.value;
-    console.log(' val1'  + val);
-    if (!val || !val.trim()) {
-      this.currentItems = [];
-      return;
+    this.newDescriptionList = [];
+
+    // if the value is an empty string don't filter the descriptionList
+    if (val && val.trim() != '') {
+      
+      // Filter the descriptionList
+      this.newDescriptionList = this.descriptionList.filter((item) => {
+        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      });
+      
+      // Show the results
+      this.showList = true;
+    } else {
+      
+      // hide the results when the query is empty
+      this.showList = false;
     }
-    console.log(' val'  + val);
-    // this.currentItems = this.descItems.query({
-    //   name: val
-    // });
-    // this.currentItems = this.description.filter((v) => {
+  }
 
-    //     if (v.toLowerCase().indexOf(val.toLowerCase()) > -1) {
-    //       return true;
-    //       }
-
-    //       return false;
-    //     })
+  public selectDesc(event: any, item: any){
+    event.stopPropagation();
+    this.initializeItems();
+    this.posObject.description = item;
   }
 
   public logout() {
@@ -131,6 +145,10 @@ export class SearchPage {
   
   public popView() {
     this.nav.pop();
+  }
+
+  public initializeItems() {
+    this.newDescriptionList = [];
   }
 
   public showError(text) {
