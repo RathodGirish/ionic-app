@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, IonicPage, NavParams, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
+import { APIService } from '../../providers/api-service';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -10,26 +11,21 @@ import 'rxjs/add/operator/map';
   templateUrl: 'search.html'
 })
 export class SearchPage {
-  searchBy = '';
-  plu_no = '';
-  info: any = {};
-  posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "" };
-  currentPriceList = [];
-  departmentList = [];
-  descriptionList = [];
-  descList = [];
-  item: any;
-  newDescriptionList = [];
-  dName = "";
-  currentItems: any[] = [];
-  showList: boolean = false;
-  byScanner: boolean = false;
-  searchQuery: string = '';
-  items: string[];
+  public searchBy = '';
+  public plu_no = '';
+  public info: any = {};
+  public posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "" };
+  public departmentList = [];
+  public descriptionList = [];
+  public item: any;
+  public newDescriptionList = [];
+  public dName = "";
+  public showList: boolean = false;
+  public byScanner: boolean = false;
 
-  selectedItem = { "item_id": "", "plu_no": "", "price": "", "description": "" };
+  public selectedItem = { "item_id": "", "plu_no": "", "price": "", "description": "" };
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http, public loadingController: LoadingController) {
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http, public loadingController: LoadingController, public API_SERVICE: APIService) {
     let THIS = this;
     this.info = this.auth.getUserInfo();
     console.log(' info ' + JSON.stringify(this.info));
@@ -43,90 +39,63 @@ export class SearchPage {
       this.nav.setRoot('LoginPage');
     }
 
-    // this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=cprize&store_id=" + this.info.store_id, function (err, res) {
-    //   if (err) {
-    //     console.log("ERROR!: ", err);
-    //   } else {
-    //     THIS.currentPriceList = res.message;
-    //     console.log("THIS.currentPriceList " + THIS.currentPriceList);
-    //   }
-    // });
-
-    let deptUrl = "http://192.169.176.227/backofficeweb/?action=department&store_id=" + parseInt(this.info
-    .store_id);
-    this.GetDataByURL(deptUrl, function (err, res) {
-      if (err) {
-        console.log("ERROR!: ", err);
-      } else {
-        console.log("res.message : "+JSON.stringify(res.message));
-        THIS.departmentList = res.message;
-        // console.log("THIS.departmentList " + JSON.stringify(THIS.departmentList));
-      }
-    });
-
-    this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=grocery_items&store_id=" + this.info.store_id, function (err, res) {
-      if (err) {
-        console.log("ERROR!: ", err);
-      } else {
-        THIS.descriptionList = res.message;
-        // THIS.descriptionList.forEach((des) => {  // foreach statement
-        //   THIS.descList.push(des.description);
-        //   // console.log("des : "+JSON.stringify(des));
-        // });
-
-        //THIS.descriptionList = THIS.descList;
-        //  console.log("THIS.descList" + JSON.stringify(THIS.descList));
-        // console.log("THIS.descriptionList" + JSON.stringify(THIS.descriptionList));
-      }
-    });
-
-    this.searchBy = this.navParams.get('searchBy');
-    // alert("this.searchBy:" + this.searchBy);
-    // for scnner value assing 
-    if (this.searchBy == 'scanner') {
-      this.plu_no = this.navParams.get('plu_no');
-      // alert("plu_no :" + this.plu_no)
-      this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=barcode_items&store_id=" + this.info.store_id + "&plu_no=" + this.plu_no, function (err, res) {
+    this.API_SERVICE.getDepartmentsByStoreId(parseInt(this.info
+      .store_id), function (err, res) {
         if (err) {
           console.log("ERROR!: ", err);
-        } else {
-          if (res.message == null || res.message == '' || res.message == 'undefined') {
-             loader.dismiss();
-             alert("Sorry No Data Found !!");
-             THIS.popView();
-          }
-          else {
-            const b = JSON.parse(JSON.stringify(res.message));
-            THIS.item = b[0];
-            THIS.selectedItem = b[0];
-            THIS.posObject.description = b[0].description;
-            let department_id = b[0].dept_id;
-            // alert("department_id : "+department_id);
-            // department name
-
-            THIS.posObject.dName = THIS.getDepartmentNameByid(department_id);
-            
-            // THIS.posObject.dName = THIS.dName[0].department_name;
-            // alert("this.posObject.dName : "+THIS.posObject.dName);
-            THIS.byScanner = true;
-            loader.dismiss();
-          }
-
+        }
+        else {
+          console.log("res Department :" + res);
+          THIS.departmentList = res.message;
         }
       });
-    }
-    else {
+
+    this.API_SERVICE.getGroceryItemsByStoreId(this.info
+      .store_id, function (err, res) {
+        if (err) {
+          console.log("ERROR!: ", err);
+        }
+        else {
+          console.log("res Items :" + res);
+          THIS.descriptionList = res.message;
+        }
+      });
+
+    this.searchBy = this.navParams.get('searchBy');
+
+    // for scnner value assign
+    if (this.searchBy == 'scanner') {
+      this.plu_no = this.navParams.get('plu_no');
+      this.API_SERVICE.getScanneItemsByStoreId(this.info
+        .store_id, this.plu_no, function (err, res) {
+          if (err) {
+            console.log("ERROR!: ", err);
+          }
+          else {
+            if (res.message == null || res.message == '' || res.message == 'undefined') {
+              loader.dismiss();
+              alert("Sorry No Data Found !!");
+              THIS.popView();
+            } else {
+              const b = JSON.parse(JSON.stringify(res.message));
+              THIS.item = b[0];
+              THIS.selectDesc(null, THIS.item);
+              THIS.byScanner = true;
+              loader.dismiss();
+            }
+          }
+        });
+    } else {
       loader.dismiss();
-     
     }
-    this.initializeItems();
+    this.initializeDescriptionItems();
   }
-  
-  public getDepartmentNameByid(department_id: any){
+
+  public getDepartmentNameByid(department_id: any) {
     let THIS = this;
     let deptName = "";
     THIS.departmentList.filter((d) => {
-      if(d.number == department_id){
+      if (d.number == department_id) {
         deptName = d.department_name;
       }
     });
@@ -134,10 +103,6 @@ export class SearchPage {
   }
 
   public searchDescription(ev: any) {
-    // Reset descriptionList back to all of the items
-    //this.initializeItems();
-
-    // set val to the value of the searchbar
     let val = ev.target.value;
     this.newDescriptionList = [];
 
@@ -158,22 +123,17 @@ export class SearchPage {
   }
 
   public selectDesc(event: any, item: any) {
-    // alert("item :"+JSON.stringify(item));
-    event.stopPropagation();
-    // console.log(' item ' + JSON.stringify(item));
-    this.initializeItems();
+    if(event != null){
+      event.stopPropagation();
+    }
+    this.initializeDescriptionItems();
     this.selectedItem = item;
     this.posObject.description = item.description;
     let department_id = item.dept_id;
-    console.log("department_id :"+department_id);
-    // let department_id = "590";
+    console.log("department_id :" + department_id);
 
     // department name
     this.posObject.dName = this.getDepartmentNameByid(department_id);
-
-    // this.posObject.dName = this.dName[0].department_name;
-    // console.log("dName : "+ this.posObject.dName);
-    // alert("this.posObject.dName :"+ this.posObject.dName)
   }
 
   public logout() {
@@ -230,7 +190,7 @@ export class SearchPage {
     this.nav.pop();
   }
 
-  public initializeItems() {
+  public initializeDescriptionItems() {
     this.newDescriptionList = [];
   }
 

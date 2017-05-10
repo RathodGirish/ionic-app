@@ -1,59 +1,53 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
- 
+
 export class User {
-  id:  string;
+  id: string;
   role_id: string;
   store_id: string;
   username: string;
   email: string;
- 
-  constructor(username: string, email: string) {
-    this.username = username;
-    this.email = email;
+  constructor() {
   }
 }
- 
+
 @Injectable()
 export class AuthService {
   currentUser: User;
- 
-  public login(credentials, http) {
+  constructor( @Inject(Http) private http: Http) { }
+
+  public login(credentials: any, callback) {
+    alert('credentials :'+JSON.stringify(credentials));
+    alert('credentials with out json stringify :'+credentials);
+    alert('credentials direct :'+credentials.email + ' pass :'+credentials.password);
     if (credentials.email === null || credentials.password === null) {
+      alert("credentials empty");
       return Observable.throw("Please insert credentials");
     } else {
-      return Observable.create(observer => {
-        // At this point make a request to your backend to make a real check!
-        let access = (credentials.password === "111111" && credentials.email === "test@gmail.com");
-        // this.currentUser = new User('Test', 'test@gmail.com');
-
-        let body = new FormData();
-        body.append('email', credentials.email);
-        body.append('password', credentials.password);
-        body.append('type', credentials.type);
-        let headers = new Headers({});
-        let options = new RequestOptions({ headers: headers });
-
-        http
-            .post('http://192.169.176.227/backofficeweb/', body, options)
-            .map(res => res.json())
-            .subscribe(
-                data => {
-                  console.log(data);
-                  this.currentUser = data;
-                  observer.next(access);
-                  observer.complete();
-                },
-                err => {
-                  console.log("ERROR!: ", err);
-                }
-            );
-      });
+      let headers = new Headers({});
+      let options = new RequestOptions({ headers: headers });
+      this.http
+        .post('http://192.169.176.227/backofficeweb/', credentials, options)
+        .map(res => res.json())
+        .subscribe(
+        data => {
+          console.log("hello data called");
+          if (data.status == 'Success') {
+            callback(null, data);
+          } else {
+            console.log("hello null data called");
+            callback(null, data);
+          }
+        },
+        err => {
+          console.log("ERROR!: ", err);
+        }
+        );
     }
   }
- 
+
   public register(credentials) {
     if (credentials.email === null || credentials.password === null) {
       return Observable.throw("Please insert credentials");
@@ -65,18 +59,18 @@ export class AuthService {
       });
     }
   }
- 
-  public getUserInfo() : User {
+
+  public getUserInfo(): User {
     // return this.currentUser;
     return JSON.parse(localStorage.getItem('currentUser'))
   }
 
-  public setCurrentUser(user: any, email: string){
+  public setCurrentUser(user: any, email: string) {
     this.currentUser = user;
     this.currentUser.email = email;
     localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
   }
- 
+
   public logout() {
     return Observable.create(observer => {
       this.currentUser = null;
@@ -85,4 +79,5 @@ export class AuthService {
       observer.complete();
     });
   }
+
 }

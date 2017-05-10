@@ -1,4 +1,5 @@
 import { AuthService } from './../providers/auth-service';
+import { APIService } from './../providers/api-service';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -30,7 +31,8 @@ import { MyApp } from './app.component';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
-    BarcodeScanner
+    BarcodeScanner,
+    APIService
   ]
 })
 export class AppModule {}

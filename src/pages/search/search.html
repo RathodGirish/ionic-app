@@ -31,32 +31,16 @@
               </ion-item>
             </ion-list>
 
-            <!--<ion-item >
-              <ion-label>Description</ion-label>
-              <ion-select name="description" [(ngModel)]="posObject.description" [disabled]="!description && !description.length > 0" required>
-                <ion-option *ngFor="let key of description">{{key}}</ion-option>
-              </ion-select>
-            </ion-item>-->
-
             <ion-item>
               <ion-label>Department : {{posObject.dName}}</ion-label>
-              <!--<ion-select name="department" [(ngModel)]="posObject.department" [disabled]="!departmentList && !departmentList.length > 0" required>
-                <ion-option *ngFor="let key of departmentList" value="{{key.dept_id}}">{{key.department_name}}</ion-option>
-              </ion-select>-->
             </ion-item>
 
             <ion-item>
               <ion-label>UPC Code : {{selectedItem.plu_no}}</ion-label>
-              <!--<ion-select name="plu_no" [(ngModel)]="posObject.plu_no" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
-                <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.plu_no}}</ion-option>
-              </ion-select>-->
             </ion-item>
 
             <ion-item>
               <ion-label>Current Price : {{selectedItem.price}}</ion-label>
-              <!--<ion-select name="current_price" [(ngModel)]="posObject.current_price" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
-                <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.price}}</ion-option>
-              </ion-select>-->
             </ion-item>
 
             <ion-item>

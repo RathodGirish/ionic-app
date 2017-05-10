@@ -22,14 +22,11 @@ export class HomePage {
       this.showError('Please login first');
       this.nav.setRoot('LoginPage');
     }
-    // this.showError(JSON.stringify(info));
   }
 
   async scanBarcode() {
     const results = await this.barcode.scan();
-    // this.barcodeResult = results; 
     if (results.text) {
-      // alert(' results ' + results.text);
       const plu_no = '0'+results.text;
       this.nav.push(SearchPage, {
         searchBy: 'scanner',
@@ -50,8 +47,7 @@ export class HomePage {
     });
   }
 
-  showError(text) {
-
+  public showError(text) {
     let alert = this.alertCtrl.create({
       title: 'Fail',
       subTitle: text,
