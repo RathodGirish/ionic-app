@@ -20,7 +20,7 @@ export class SearchPage {
   descList = [];
   item: any;
   newDescriptionList = [];
-  dName = [];
+  dName = "";
   currentItems: any[] = [];
   showList: boolean = false;
   byScanner: boolean = false;
@@ -35,7 +35,7 @@ export class SearchPage {
     console.log(' info ' + JSON.stringify(this.info));
 
     let loader = THIS.loadingController.create({
-      content: "wait a minute plz"
+      content: "Please wait..."
     });
     loader.present();
     if (this.info == null) {
@@ -52,10 +52,13 @@ export class SearchPage {
     //   }
     // });
 
-    this.GetDataByURL("http://192.169.176.227/backofficeweb/?action=department&store_id=" + this.info.store_id, function (err, res) {
+    let deptUrl = "http://192.169.176.227/backofficeweb/?action=department&store_id=" + parseInt(this.info
+    .store_id);
+    this.GetDataByURL(deptUrl, function (err, res) {
       if (err) {
         console.log("ERROR!: ", err);
       } else {
+        console.log("res.message : "+JSON.stringify(res.message));
         THIS.departmentList = res.message;
         // console.log("THIS.departmentList " + JSON.stringify(THIS.departmentList));
       }
@@ -100,11 +103,10 @@ export class SearchPage {
             let department_id = b[0].dept_id;
             // alert("department_id : "+department_id);
             // department name
-            THIS.dName = [];
-            THIS.dName = THIS.departmentList.filter((d) => {
-              return (d.number.toLowerCase().indexOf(department_id) > -1);
-            });
-            THIS.posObject.dName = THIS.dName[0].department_name;
+
+            THIS.posObject.dName = THIS.getDepartmentNameByid(department_id);
+            
+            // THIS.posObject.dName = THIS.dName[0].department_name;
             // alert("this.posObject.dName : "+THIS.posObject.dName);
             THIS.byScanner = true;
             loader.dismiss();
@@ -118,6 +120,17 @@ export class SearchPage {
      
     }
     this.initializeItems();
+  }
+  
+  public getDepartmentNameByid(department_id: any){
+    let THIS = this;
+    let deptName = "";
+    THIS.departmentList.filter((d) => {
+      if(d.number == department_id){
+        deptName = d.department_name;
+      }
+    });
+    return deptName;
   }
 
   public searchDescription(ev: any) {
@@ -152,16 +165,13 @@ export class SearchPage {
     this.selectedItem = item;
     this.posObject.description = item.description;
     let department_id = item.dept_id;
+    console.log("department_id :"+department_id);
     // let department_id = "590";
 
     // department name
-    this.dName = [];
-    // console.log("this.departmentList : "+JSON.stringify(this.departmentList));
-    this.dName = this.departmentList.filter((d) => {
-      return (d.number.toLowerCase().indexOf(department_id) > -1);
-    });
+    this.posObject.dName = this.getDepartmentNameByid(department_id);
 
-    this.posObject.dName = this.dName[0].department_name;
+    // this.posObject.dName = this.dName[0].department_name;
     // console.log("dName : "+ this.posObject.dName);
     // alert("this.posObject.dName :"+ this.posObject.dName)
   }
