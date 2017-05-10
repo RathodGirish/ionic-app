@@ -11,13 +11,21 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
- 
+
 <ion-content class="home" padding *ngIf="info != null">
   <ion-row>
     <ion-col class="action-col">
       <button ion-button class="success-btn" full (click)="searchBy('Description')">Description</button>
       <h4 class='text-center'>OR</h4>
-      <button ion-button class="primary-btn" full (click)="searchBy('Scanner')">Scanner</button>
+      <!--<button ion-button class="primary-btn" full (click)="searchBy('Scanner')">Scanner</button>-->
+      <button ion-button class="primary-btn" full (click)="scanBarcode()">Scanner</button>
+      <!--<div>
+        <p>barcodeResult : {{barcodeResult}}</p>
+        <p>results : {{results}}</p>
+        </div>-->
+          <!--<button ion-button (click)="scanBarcode()">Scan-Barcode</button>-->
     </ion-col>
   </ion-row>
+
+
 </ion-content>

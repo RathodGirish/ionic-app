@@ -12,19 +12,22 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="page-content" padding *ngIf="info != null">
+<ion-content class="page-content" padding *ngIf="info != null"> 
   <div class="content-box">
     <form (ngSubmit)="sendToPOS($event, posForm.value, posForm.valid)" #posForm="ngForm">
       <ion-row>
         <ion-col>
-          <ion-list inset>
+          <ion-list inset> 
+              <ion-item [hidden]="!byScanner">
+              <ion-label>Description : {{posObject.description}}</ion-label> 
+            </ion-item>
 
-            <ion-item class='autocomplete-item'>
+            <ion-item class='autocomplete-item' [hidden]="byScanner">
               <ion-searchbar placeholder="Description" name="description" [(ngModel)]="posObject.description" (ionInput)="searchDescription($event)"></ion-searchbar>
             </ion-item>
             <ion-list *ngIf="showList" class='autocomplete-list'>
               <ion-item *ngFor="let item of newDescriptionList" class='autocomplete-item radius-0' (click)="selectDesc($event, item)">
-                {{ item }}
+                {{ item.description }}
               </ion-item>
             </ion-list>
 
@@ -36,24 +39,24 @@
             </ion-item>-->
 
             <ion-item>
-              <ion-label>Department</ion-label>
-              <ion-select name="department" [(ngModel)]="posObject.department" [disabled]="!departmentList && !departmentList.length > 0" required>
+              <ion-label>Department : {{posObject.dName}}</ion-label>
+              <!--<ion-select name="department" [(ngModel)]="posObject.department" [disabled]="!departmentList && !departmentList.length > 0" required>
                 <ion-option *ngFor="let key of departmentList" value="{{key.dept_id}}">{{key.department_name}}</ion-option>
-              </ion-select>
+              </ion-select>-->
             </ion-item>
 
             <ion-item>
-              <ion-label>UPC Code</ion-label>
-              <ion-select name="plu_no" [(ngModel)]="posObject.plu_no" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
+              <ion-label>UPC Code : {{selectedItem.plu_no}}</ion-label>
+              <!--<ion-select name="plu_no" [(ngModel)]="posObject.plu_no" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
                 <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.plu_no}}</ion-option>
-              </ion-select>
+              </ion-select>-->
             </ion-item>
 
             <ion-item>
-              <ion-label>Current Price</ion-label>
-              <ion-select name="current_price" [(ngModel)]="posObject.current_price" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
+              <ion-label>Current Price : {{selectedItem.price}}</ion-label>
+              <!--<ion-select name="current_price" [(ngModel)]="posObject.current_price" [disabled]="!currentPriceList && !currentPriceList.length > 0" required>
                 <ion-option *ngFor="let key of currentPriceList" value="{{key.plu_no}}">{{key.price}}</ion-option>
-              </ion-select>
+              </ion-select>-->
             </ion-item>
 
             <ion-item>
