@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, IonicPage,MenuController  } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { SearchPage } from '../search/search';
 import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-scanner';
@@ -14,7 +14,8 @@ export class HomePage {
   info: any = {};
   barcodeResult;
   options: BarcodeScannerOptions;
-  constructor(private barcode: BarcodeScanner, private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, ) {
+  constructor(menu: MenuController,private barcode: BarcodeScanner, private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, ) {
+     menu.enable(true);
     this.info = this.auth.getUserInfo();
     console.log(' info ' + JSON.stringify(this.info));
 

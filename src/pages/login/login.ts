@@ -54,7 +54,7 @@ export class LoginPage {
         console.log('login data  ' + data);
         if (data.status == 'Success') {
           this.auth.setCurrentUser(data.Data, this.loginCredentials.email);
-          this.nav.setRoot('HomePage');
+          this.nav.setRoot('Dashboard');
         } else {
           this.showError(data.message);
         }

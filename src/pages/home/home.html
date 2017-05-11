@@ -10,9 +10,10 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-</ion-header>
+</ion-header> 
+ 
 
-<ion-content class="home" padding *ngIf="info != null">
+ <ion-content class="home" padding *ngIf="info != null">
   <ion-row>
     <ion-col class="action-col">
       <button ion-button class="success-btn" full (click)="searchBy('Description')">Description</button>
@@ -20,4 +21,25 @@
       <button ion-button class="primary-btn" full (click)="scanBarcode()">Scanner</button>
     </ion-col>
   </ion-row>
-</ion-content>
+</ion-content> 
+
+
+
+
+<!--========================-->
+
+
+
+<!--<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>
+      Menus
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <button ion-button block menuToggle>Toggle Menu</button>
+</ion-content>-->

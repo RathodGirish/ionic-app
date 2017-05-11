@@ -1,5 +1,6 @@
 <ion-content class="page-content" padding>
-  <div class="content-box">
+  <p class="removePadding">Sing in using your username and password to manage your store</p>
+  <div class="content-box contentBoxPadding">
     <form (ngSubmit)="login()" #loginForm="ngForm">
       <ion-row>
         <ion-col>
@@ -14,21 +15,28 @@
             <ion-item>
               <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="loginCredentials.email" required></ion-input>
             </ion-item>
-            
+
             <ion-item>
               <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="loginCredentials.password" required></ion-input>
             </ion-item>
-            
+
           </ion-list>
+
+
         </ion-col>
       </ion-row>
-      
-      <ion-row>
-        <ion-col class="action-col">
-          <button ion-button class="success-btn" full type="submit" [disabled]="!loginForm.form.valid">Login</button>
-        </ion-col>
+      <ion-row class="chkboxform">
+        <ion-checkbox color="secondary" checked="true"></ion-checkbox>
+        <p class="chkboxLable">Remember me</p>
       </ion-row>
-      
+      <ion-row> 
+          <button ion-button class="btn" full type="submit" [disabled]="!loginForm.form.valid">Sign in</button>
+      </ion-row>
+     
+      <ion-row> 
+          <button ion-button color="light" full type="submit" [disabled]="!loginForm.form.valid">Forget Password</button>
+      </ion-row>
     </form>
+    <p class="appVersion">App Version: <b>5.1.1</b></p>
   </div>
 </ion-content>
