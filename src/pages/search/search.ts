@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, IonicPage, NavParams, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { APIService } from '../../providers/api-service';
+import { GLOBAL_VARIABLE } from '../../providers/constant';
 import { Http } from '@angular/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import 'rxjs/add/operator/map';
