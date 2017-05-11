@@ -3,6 +3,22 @@
     display: block;
 }
 
+.menu-inner{
+    .content, .item-block {
+        background-color: map-get($colors, dark);
+        color: map-get($colors, light);
+        box-shadow: 1px !important;
+    }
+
+    .activeHightlight {
+        background-color: #33CC99;
+    }
+
+    .item-inner{
+        border: 0px !important;
+    }
+}
+
 .text-center{
     text-align: center;
 }

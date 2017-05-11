@@ -3,6 +3,7 @@ import { NavController, AlertController, IonicPage, NavParams, LoadingController
 import { AuthService } from '../../providers/auth-service';
 import { APIService } from '../../providers/api-service';
 import { Http } from '@angular/http';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import 'rxjs/add/operator/map';
 
 @IonicPage()
@@ -14,7 +15,7 @@ export class SearchPage {
   public searchBy = '';
   public plu_no = '';
   public info: any = {};
-  public posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "",plu_no:"" };
+  public posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "", plu_no: "" };
   public departmentList = [];
   public descriptionList = [];
   public UPCList = [];
@@ -26,7 +27,7 @@ export class SearchPage {
 
   public selectedItem = { "item_id": "", "plu_no": "", "price": "", "description": "" };
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http, public loadingController: LoadingController, public API_SERVICE: APIService) {
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, public navParams: NavParams, private http: Http, public loadingController: LoadingController, public API_SERVICE: APIService, private barcode: BarcodeScanner) {
     let THIS = this;
     this.info = this.auth.getUserInfo();
     console.log(' info ' + JSON.stringify(this.info));
@@ -115,13 +116,13 @@ export class SearchPage {
     }
     this.initializeDescriptionItems();
     this.selectedItem = item;
-    if(searchBy == 'Barcode'){
-       this.posObject.plu_no = item.plu_no;
+    if (searchBy == 'Barcode') {
+      this.posObject.plu_no = item.plu_no;
     }
     else {
-       this.posObject.description = item.description;
+      this.posObject.description = item.description;
     }
-   
+
     let department_id = item.dept_id;
     console.log("department_id :" + department_id);
 
@@ -180,11 +181,17 @@ export class SearchPage {
     }
   }
 
-  // public popView() {
-  //   this.nav.pop();
-  // }
+  async scanBarcode(search: any) {
+    const results = await this.barcode.scan();
+    if (results.text) {
+      const plu_no = '0'+results.text;
+      this.nav.setRoot(SearchPage, {
+        searchBy: search,
+        plu_no: plu_no
+      });
+    }
+  }
 
-  
   public initializeDescriptionItems() {
     this.newDescriptionList = [];
   }
@@ -207,34 +214,3 @@ export class SearchPage {
     alert.present(prompt);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-//  this.plu_no = this.navParams.get('plu_no');
-//       this.API_SERVICE.getScanneItemsByStoreId(this.info
-//         .store_id, this.plu_no, function (err, res) {
-//           if (err) {
-//             console.log("ERROR!: ", err);
-//           }
-//           else {
-//             if (res.message == null || res.message == '' || res.message == 'undefined') {
-//               loader.dismiss();
-//               alert("Sorry No Data Found !!");
-//               THIS.popView();
-//             } else {
-//               const b = JSON.parse(JSON.stringify(res.message));
-//               THIS.item = b[0];
-//               THIS.selectDesc(null, THIS.item);
-//               THIS.byScanner = true;
-//               loader.dismiss();
-//             }
-//           }
-//         });

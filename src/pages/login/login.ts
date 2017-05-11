@@ -10,8 +10,8 @@ import { AuthService } from '../../providers/auth-service';
 })
 export class LoginPage {
   loading: Loading;
-  // loginCredentials = { email: 'texonoil@gmail.com', password: 'tex@123', type: 'company' };
-  loginCredentials = { email: '', password: '', type: 'company' };
+  loginCredentials = { email: 'texonoil@gmail.com', password: 'tex@123', type: 'company' };
+  // loginCredentials = { email: '', password: '', type: 'company' };
   typeList: any[] = [{ value: 1, text: 'option 1', checked: false }, { value: 2, text: 'option 2', checked: false }];
 
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private http: Http) {
@@ -31,20 +31,6 @@ export class LoginPage {
     body.append('type', this.loginCredentials.type);
     let headers = new Headers({});
     let options = new RequestOptions({ headers: headers });
-    // console.log(' this.loginCredentials ' + JSON.stringify(this.loginCredentials));
-    // this.auth.login(body, function (err, res) {
-    //   if (err) {
-    //     alert("err :" + err);
-    //   }
-    //   else {
-    //     if (res.status == 'Success') {
-    //       THIS.auth.setCurrentUser(res.Data, this.loginCredentials.email);
-    //       THIS.nav.setRoot('HomePage');
-    //     } else {
-    //       this.showError(res.message);
-    //     }
-    //   }
-    // });
 
     this.http
       .post('http://192.169.176.227/backofficeweb/?data=login', body, options)

@@ -29,7 +29,6 @@ export class PricebookPage {
     const results = await this.barcode.scan();
     if (results.text) {
       const plu_no = '0'+results.text;
-      // this.navCtrl.setRoot('PricebookPage');
       this.nav.setRoot(SearchPage, {
         searchBy: search,
         plu_no: plu_no
