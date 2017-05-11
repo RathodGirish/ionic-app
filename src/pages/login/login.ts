@@ -47,7 +47,7 @@ export class LoginPage {
     // });
 
     this.http
-      .post('http://192.169.176.227/backofficeweb/', body, options)
+      .post('http://192.169.176.227/backofficeweb/?data=login', body, options)
       .map(res => res.json())
       .subscribe(
       data => {

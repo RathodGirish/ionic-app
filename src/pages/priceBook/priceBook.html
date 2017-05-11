@@ -1,8 +1,7 @@
 <ion-header>
   <ion-navbar color="dark">
     <ion-title>
-      <span class='header-title'>Welcome, {{info.username}}!</span>
-      <span class='header-title'>Search Item By</span>
+      <span class='header-title pull-left'>Welcome, {{info.username}}!</span>
     </ion-title>
     <ion-buttons end>
       <button ion-button (click)="logout()">
@@ -10,18 +9,20 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-</ion-header> 
- 
+</ion-header>
 
- <ion-content class="home" padding *ngIf="info != null">
+
+<ion-content class="home" padding *ngIf="info != null">
+  <h3 color="white" class='page-title' style= "margin-top:1%;margin-bottom: 15%;">Manage Pricebook</h3>
   <ion-row>
     <ion-col class="action-col">
+      <h6 class='text-center'>Search Item By</h6>
       <button ion-button class="success-btn" full (click)="searchBy('Description')">Description</button>
       <h4 class='text-center'>OR</h4>
-      <button ion-button class="primary-btn" full (click)="scanBarcode()">Scanner</button>
+      <button ion-button class="primary-btn" full (click)="searchBy('Barcode')">Bar Code</button>
     </ion-col>
   </ion-row>
-</ion-content> 
+</ion-content>
 
 
 

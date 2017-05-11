@@ -14,9 +14,10 @@ export class SearchPage {
   public searchBy = '';
   public plu_no = '';
   public info: any = {};
-  public posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "" };
+  public posObject = { item_id: '', description: '', newPrice: "", updateInventory: "", dName: "",plu_no:"" };
   public departmentList = [];
   public descriptionList = [];
+  public UPCList = [];
   public item: any;
   public newDescriptionList = [];
   public dName = "";
@@ -64,27 +65,9 @@ export class SearchPage {
     this.searchBy = this.navParams.get('searchBy');
 
     // for scnner value assign
-    if (this.searchBy == 'scanner') {
-      this.plu_no = this.navParams.get('plu_no');
-      this.API_SERVICE.getScanneItemsByStoreId(this.info
-        .store_id, this.plu_no, function (err, res) {
-          if (err) {
-            console.log("ERROR!: ", err);
-          }
-          else {
-            if (res.message == null || res.message == '' || res.message == 'undefined') {
-              loader.dismiss();
-              alert("Sorry No Data Found !!");
-              THIS.popView();
-            } else {
-              const b = JSON.parse(JSON.stringify(res.message));
-              THIS.item = b[0];
-              THIS.selectDesc(null, THIS.item);
-              THIS.byScanner = true;
-              loader.dismiss();
-            }
-          }
-        });
+    if (this.searchBy == 'Barcode') {
+      loader.dismiss();
+
     } else {
       loader.dismiss();
     }
@@ -102,7 +85,7 @@ export class SearchPage {
     return deptName;
   }
 
-  public searchDescription(ev: any) {
+  public searchDescription(ev: any, searchBy: any) {
     let val = ev.target.value;
     this.newDescriptionList = [];
 
@@ -110,9 +93,13 @@ export class SearchPage {
     if (val && val.trim() != '') {
       // Filter the descriptionList
       this.newDescriptionList = this.descriptionList.filter((item) => {
-        return (item.description.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        if (searchBy == 'Barcode') {
+          return (item.plu_no.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        }
+        else {
+          return (item.description.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        }
       });
-
       // Show the results
       this.showList = true;
     } else {
@@ -122,13 +109,19 @@ export class SearchPage {
     }
   }
 
-  public selectDesc(event: any, item: any) {
-    if(event != null){
+  public selectDesc(event: any, item: any, searchBy: any) {
+    if (event != null) {
       event.stopPropagation();
     }
     this.initializeDescriptionItems();
     this.selectedItem = item;
-    this.posObject.description = item.description;
+    if(searchBy == 'Barcode'){
+       this.posObject.plu_no = item.plu_no;
+    }
+    else {
+       this.posObject.description = item.description;
+    }
+   
     let department_id = item.dept_id;
     console.log("department_id :" + department_id);
 
@@ -174,7 +167,8 @@ export class SearchPage {
           console.log('updatePos data  ' + JSON.stringify(data));
           if (data.status == 1) {
             this.showSucess('POS Updated Successfully');
-            this.popView();
+            // this.popView();
+            this.nav.setRoot('priceBook');
           } else {
             this.showError('Fail to Update POS');
           }
@@ -186,10 +180,11 @@ export class SearchPage {
     }
   }
 
-  public popView() {
-    this.nav.pop();
-  }
+  // public popView() {
+  //   this.nav.pop();
+  // }
 
+  
   public initializeDescriptionItems() {
     this.newDescriptionList = [];
   }
@@ -212,3 +207,34 @@ export class SearchPage {
     alert.present(prompt);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+//  this.plu_no = this.navParams.get('plu_no');
+//       this.API_SERVICE.getScanneItemsByStoreId(this.info
+//         .store_id, this.plu_no, function (err, res) {
+//           if (err) {
+//             console.log("ERROR!: ", err);
+//           }
+//           else {
+//             if (res.message == null || res.message == '' || res.message == 'undefined') {
+//               loader.dismiss();
+//               alert("Sorry No Data Found !!");
+//               THIS.popView();
+//             } else {
+//               const b = JSON.parse(JSON.stringify(res.message));
+//               THIS.item = b[0];
+//               THIS.selectDesc(null, THIS.item);
+//               THIS.byScanner = true;
+//               loader.dismiss();
+//             }
+//           }
+//         });

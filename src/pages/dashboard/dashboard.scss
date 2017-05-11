@@ -1,23 +1,33 @@
 page-dashboard {
+    .card-ios{
+        margin: 2px 0px !important;
+        width: 100%;
+    }
 
+    ion-card{
+        padding: 10px;
+        height: 100px;
+        border: 1px solid #ddd;
+    }
+
+    .card-title{
+        font-size: 12px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .card-col{
+        padding: 2.5px;
+    }
+
+    .imageIcone{
+        height: 68px;
+        width: auto;
+        margin: 0 auto;
+    }
 }
 
-  .square {
-    float:left;
-    position: relative;
-    width: 50%;
-    padding-bottom: 50%; /* = width for a 1:1 aspect ratio */
-    margin:1.66%;
-    overflow:hidden;
-}
-
-.content {
-    position:absolute;
-    height:80%; /* = 100% - 2*10% padding */
-    width:90%; /* = 100% - 2*5% padding */
-    padding: 10% 5%;
-}
-
+ 
 
 // .card-background-page {
 

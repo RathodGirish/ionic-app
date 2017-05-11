@@ -6,9 +6,9 @@ import { BarcodeScanner, BarcodeScannerOptions } from '@ionic-native/barcode-sca
 @IonicPage()
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'priceBook.html'
 })
-export class HomePage {
+export class PricebookPage {
   username = '';
   email = '';
   info: any = {};
@@ -25,19 +25,20 @@ export class HomePage {
     }
   }
 
-  async scanBarcode() {
+  async scanBarcode(search: any) {
     const results = await this.barcode.scan();
     if (results.text) {
       const plu_no = '0'+results.text;
-      this.nav.push(SearchPage, {
-        searchBy: 'scanner',
+      // this.navCtrl.setRoot('PricebookPage');
+      this.nav.setRoot(SearchPage, {
+        searchBy: search,
         plu_no: plu_no
       });
     }
   }
 
   public searchBy(search: any) {
-    this.nav.push(SearchPage, {
+    this.nav.setRoot(SearchPage, {
       searchBy: search
     });
   }

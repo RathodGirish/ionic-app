@@ -1,60 +1,48 @@
- 
 <ion-header>
-
   <ion-navbar>
     <ion-title>Logo here</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<!--<ion-content padding>
-<h2>Common tasks</h2>
-<ion-grid>
-  <ion-row>
-
-  </ion-row>
-</ion-grid>
-</ion-content>-->
-
-
-
-<ion-content padding class="card-background-page">
-  <h2 color="white">Explore</h2>
-<ion-grid>
-  <ion-row>
-      <ion-col  col-6>
-          <ion-card>
-              <img src="https://www.w3schools.com/css/trolltunga.jpg"/>
-              <div class="card-title">São Paulo</div>
-              <div class="card-subtitle">41 Listings</div>
-          </ion-card>
-      </ion-col>
-      <ion-col  col-6>
-        <ion-card>
-          <img src="https://www.w3schools.com/css/trolltunga.jpg"/>
-          <div class="card-title">Amsterdam</div>
-          <div class="card-subtitle">64 Listings</div>
+<ion-content class="card-background-page">
+  <h2 color="white" class='page-title'>Common tasks</h2>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 class='card-col'>
+        <ion-card (click)="redirectPage('priceBook')">
+          <div class="card-title">Manage Pricebook</div>
+          <img src="https://gal.proto.io/generated/96519568f695b30711a559af34f1b899_8bc8db.svg" class="mrT10 img-responsive imageIcone" />
         </ion-card>
       </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col  col-6>
-        <ion-card>
-          <img src="https://www.w3schools.com/css/trolltunga.jpg"/>
-          <div class="card-title">San Francisco</div>
-          <div class="card-subtitle">72 Listings</div>
+      <ion-col col-6 class='card-col'>
+        <ion-card (click)="redirectPage('ScratchOffReadings')">
+          <div class="card-title">Scratch-off readings</div>
+          <img src="https://gal.proto.io/generated/3339637ad16091be56cf5ebd030789a3_8bc8db.svg" class="mrT10 img-responsive imageIcone"/>
         </ion-card>
-    </ion-col>
-    <ion-col  col-6>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6 class='card-col'>
         <ion-card>
-          <img src="https://www.w3schools.com/css/trolltunga.jpg"/>
-          <div class="card-title">Madison</div>
-          <div class="card-subtitle">28 Listings</div>
         </ion-card>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+      </ion-col>
+      <ion-col col-6 class='card-col'>
+        <ion-card>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6 class='card-col'>
+        <ion-card>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6 class='card-col'>
+        <ion-card>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    
+  </ion-grid>
 </ion-content>
 
 

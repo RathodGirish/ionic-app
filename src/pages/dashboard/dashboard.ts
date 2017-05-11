@@ -21,4 +21,12 @@ export class Dashboard {
     console.log('ionViewDidLoad Dashboard');
   }
 
+  public redirectPage(type : any){
+    if(type=='priceBook'){ 
+       this.navCtrl.setRoot('PricebookPage');
+    }
+    else if(type=='ScratchOffReadings'){
+
+    }
+  }
 }
