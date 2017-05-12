@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, IonicPage, MenuController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from '../../providers/auth-service';
 
@@ -14,8 +14,8 @@ export class LoginPage {
   // loginCredentials = { email: '', password: '', type: 'company' };
   typeList: any[] = [{ value: 1, text: 'option 1', checked: false }, { value: 2, text: 'option 2', checked: false }];
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private http: Http) {
-   
+  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private http: Http, public menuController: MenuController) {
+    this.menuController.swipeEnable(false, 'sideMenu');
   }
 
   public createAccount() {
@@ -48,7 +48,7 @@ export class LoginPage {
       err => {
         console.log("ERROR!: ", err);
       }
-    );
+      );
 
   }
 

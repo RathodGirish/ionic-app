@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, IonicPage, NavParams, LoadingController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { APIService } from '../../providers/api-service';
-import { GLOBAL_VARIABLE } from '../../providers/constant';
+// import { GLOBAL_VARIABLE } from '../../providers/constant';
 import { Http } from '@angular/http';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import 'rxjs/add/operator/map';
@@ -51,7 +51,7 @@ export class SearchPage {
           console.log("res Department :" + res);
           THIS.departmentList = res.message;
         }
-      });
+      }); 
 
     this.API_SERVICE.getGroceryItemsByStoreId(this.info
       .store_id, function (err, res) {
@@ -89,23 +89,25 @@ export class SearchPage {
 
   public searchDescription(ev: any, searchBy: any) {
     let val = ev.target.value;
-    this.newDescriptionList = [];
+    let THIS = this;
+    // Show the results
+    this.showList = true;
 
     // if the value is an empty string don't filter the descriptionList
     if (val && val.trim() != '') {
-      // Filter the descriptionList
-      this.newDescriptionList = this.descriptionList.filter((item) => {
+      console.log("descriptionList :" + THIS.descriptionList);
+      // Filter the descriptionList 
+      this.newDescriptionList = THIS.descriptionList.filter((item) => {
         if (searchBy == 'Barcode') {
+          console.log("searchBy :" + searchBy);
           return (item.plu_no.toLowerCase().indexOf(val.toLowerCase()) > -1);
         }
         else {
           return (item.description.toLowerCase().indexOf(val.toLowerCase()) > -1);
         }
       });
-      // Show the results
-      this.showList = true;
-    } else {
 
+    } else {
       // hide the results when the query is empty
       this.showList = false;
     }
@@ -154,38 +156,31 @@ export class SearchPage {
 
   public sendToPOS(event: any, pos: any, isValid: boolean) {
     event.preventDefault();
+    let THIS = this;
     console.log(' pos ' + JSON.stringify(pos) + ' isValid ' + isValid);
-
     if (isValid) {
-
-      // let updatePosURL = 'http://192.169.176.227/backofficeweb/?action=updateiteam&plu_no=' + pos. + '&description=' + pos.description + '&new_price=' + pos.new_rice + '&update_inventory=' + pos.update_inventory;
-      let updatePosURL = 'http://192.169.176.227/backofficeweb/?action=updateiteam&item_id=' + this.selectedItem.item_id + '&new_price=' + pos.new_rice + '&update_inventory=' + pos.update_inventory;
-      console.log(' updatePosURL ' + JSON.stringify(updatePosURL));
-      this.http
-        .get(updatePosURL)
-        .map(res => res.json())
-        .subscribe(
-        data => {
-          console.log('updatePos data  ' + JSON.stringify(data));
-          if (data.status == 1) {
-            this.showSucess('POS Updated Successfully');
-            // this.popView();
-            this.nav.setRoot('priceBook');
-          } else {
-            this.showError('Fail to Update POS');
-          }
-        },
-        err => {
+      this.API_SERVICE.updateItem(this.selectedItem.item_id, pos.new_rice, pos.update_inventory, function (err, res) {
+        if (err) {
           console.log("ERROR!: ", err);
+          THIS.showError('ERROR!: ' + err);
         }
-        );
+        else {
+          if (res.status == 1) {
+            THIS.showSucess('POS Updated Successfully');
+            THIS.nav.setRoot('PricebookPage');
+          } else {
+            THIS.showError('Fail to Update POS');
+          }
+        }
+      });
     }
   }
 
   async scanBarcode(search: any) {
     const results = await this.barcode.scan();
+    alert("search :" + search);
     if (results.text) {
-      const plu_no = '0'+results.text;
+      const plu_no = '0' + results.text;
       this.nav.setRoot(SearchPage, {
         searchBy: search,
         plu_no: plu_no

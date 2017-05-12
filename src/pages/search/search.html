@@ -6,11 +6,11 @@
     <ion-title>
       <span class='header-title'>Welcome, {{info.username}}!</span>
     </ion-title>
-    <ion-buttons end>
+    <!--<ion-buttons end>
       <button ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
   </ion-navbar>
 </ion-header>
 
@@ -25,16 +25,38 @@
 
             <ion-item [hidden]="searchBy != 'Description'">
               <ion-icon name="search" item-left></ion-icon>
-              <ion-input type="text" placeholder="Description" name="description"  [(ngModel)]="posObject.description"
-                (input)="searchDescription($event,searchBy)"></ion-input>
+              <ion-input type="text" placeholder="Description" name="description" [(ngModel)]="posObject.description" (input)="searchDescription($event,searchBy)"></ion-input>
             </ion-item>
 
-            <ion-item [hidden]="searchBy != 'Barcode'">
+            
+            <ion-grid class="inner-addon"> 
+              <ion-row>
+                <ion-col col-1 class="pad0 left-addon">
+                  <div>
+                    <ion-icon name="search"></ion-icon>
+                  </div>
+                </ion-col>
+                <ion-col class="pad0" col-9 class="input-addon">
+                  <div>
+                    <ion-input type="number" placeholder="UPC Code" name="plu_no" [(ngModel)]="posObject.plu_no" (input)="searchDescription($event,searchBy)"></ion-input>
+                  </div>
+                </ion-col>
+                <ion-col class="pad0" col-2 class="right-addon">
+                  <div class="pointer">
+                    <ion-icon name="camera" class='input-icon' (click)='scanBarcode()'></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+             
+
+            <!--  <ion-item [hidden]="searchBy != 'Barcode'" class="has-icon">
               <ion-icon name="search" item-left></ion-icon>
-              <ion-input type="text" placeholder="UPC Code" name="plu_no"  [(ngModel)]="posObject.plu_no"
-                (input)="searchDescription($event,searchBy)"></ion-input>
-              <ion-icon name="camera" item-right (click)="scanBarcode()"></ion-icon>
-            </ion-item>
+              <ion-input type="text" placeholder="UPC Code" name="plu_no" [(ngModel)]="posObject.plu_no" (input)="searchDescription($event,searchBy)"></ion-input>
+              <button clear (click)='scanBarcode()'>
+                  <ion-icon name="camera" class='input-icon'></ion-icon>
+               </button>
+            </ion-item>-->
 
             <ion-list *ngIf="showList" class='autocomplete-list'>
               <ion-item *ngFor="let item of newDescriptionList" [hidden]="searchBy != 'Description'" class='autocomplete-item radius-0'

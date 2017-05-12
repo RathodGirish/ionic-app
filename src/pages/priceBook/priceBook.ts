@@ -14,7 +14,7 @@ export class PricebookPage {
   info: any = {};
   barcodeResult;
   options: BarcodeScannerOptions;
-  constructor(menu: MenuController,private barcode: BarcodeScanner, private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, ) {
+  constructor(menu: MenuController,private barcode: BarcodeScanner, private nav: NavController, private auth: AuthService, private alertCtrl: AlertController ) {
      menu.enable(true);
     this.info = this.auth.getUserInfo();
     console.log(' info ' + JSON.stringify(this.info));

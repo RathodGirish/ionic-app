@@ -3,6 +3,10 @@
     display: block;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
 .menu-inner{
     .content, .item-block {
         background-color: map-get($colors, dark);
@@ -43,6 +47,23 @@
     margin-bottom: 10px;
 }
 
+.pad0{
+    padding: 0px;
+}
+
+.inner-addon{
+    background-color: white; padding: 0px !important;
+    margin-top: 10px;
+
+    .left-addon, .right-addon{
+        margin-top:3px;
+    }
+
+    
+}
+
+
+
 .page-content {
     background: #CCCCCC;
 
@@ -52,7 +73,8 @@
     }
 
     .content-box {
-        padding: 20px 20px 0px 20px;
+        // padding: 20px 20px 0px 20px;
+        padding: 20px 2px 0px;
     }
 
     ion-row {
@@ -61,13 +83,35 @@
     }
 
     ion-item {
-        border-radius: 30px !important;
-        padding-left: 30px !important;
+        // border-radius: 30px !important;
+        padding-left: 12px !important;
         font-size: 0.9em;
         margin-top: 10px;
         border: 1px solid #ffffff;
         border-bottom: 0px !important;
         box-shadow: none !important;
+        min-height: 30px;
+    }
+
+    .text-input-md{
+        margin: 8px;
+    }
+
+    ion-item ion-input,ion-item .label {
+        
+        padding-left:16px !important;
+    }
+
+    .has-icon{
+        width: 50%;
+    }
+
+    .input-icon{
+        width: 30%;
+    }
+
+    .item-block{
+        min-height: 30px;
     }
 
     .autocomplete-item{

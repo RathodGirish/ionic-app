@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController, MenuController } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthService } from '../providers/auth-service';
  
@@ -23,9 +23,10 @@ export class MyApp {
     // this.menuController.enable(false);
     console.log(' auth ' + JSON.stringify(auth));
     this.sidebarMenus = [
+      { title: 'Dashboard', component: 'Dashboard' },
       { title: 'Update Price', component: 'PricebookPage' },
-      { title: 'Add Item', component: 'Dashboard' },
-      { title: 'Lottery/Lotto', component: 'Dashboard' }
+      { title: 'Add Item', component: 'Item' },
+      { title: 'Lottery/Lotto', component: 'Lottery' }
     ];
     this.activePage = this.sidebarMenus[0];
   }
@@ -39,6 +40,12 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
     this.activePage = page;
+  }
+
+  public logout() {
+    this.auth.logout().subscribe(succ => {
+      this.nav.setRoot('LoginPage');
+    });
   }
 
   public checkActive(page: any){

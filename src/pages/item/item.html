@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <span class='header-title'>Welcome, {{info.username}}!</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="page-content" padding *ngIf="info != null">
+  <h3 color="white" class='page-title' style="margin-top:1%;">Add Item</h3>
+  <div class="content-box">
+    <form (ngSubmit)="sendToPOS($event, posForm.value, posForm.valid)" #posForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+
+            <!--<ion-item>
+              <ion-input type="text" placeholder="UPC Code" name="plu_no" [(ngModel)]="newPosObject.plu_no"></ion-input>-->
+            <!--<ion-icon name="camera" item-right (click)='scanBarcode()'></ion-icon>-->
+            <!--</ion-item>
+            <ion-item>-->
+            <!--<ion-input type="text" placeholder="UPC Code" name="plu_no" [(ngModel)]="newPosObject.plu_no"></ion-input>-->
+            <!--<ion-icon name="camera" item-right (click)='scanBarcode()'></ion-icon>
+            </ion-item>-->
+
+            <ion-grid class="inner-addon">
+              <ion-row>
+                <ion-col col-1>
+                </ion-col>
+                <ion-col class="pad0" col-10 class="input-addon">
+                  <div>
+                    <ion-input type="text" placeholder="UPC Code" name="plu_no" [(ngModel)]="newPosObject.plu_no"></ion-input>
+                  </div>
+                </ion-col>
+                <ion-col class="pad0" class="right-addon">
+                  <div class="pointer">
+                    <ion-icon name="camera" class='input-icon' (click)='scanBarcode()'></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+
+            <ion-item>
+              <ion-col col-1>
+              </ion-col>
+              <ion-input type="text" placeholder="Description" name="description" [(ngModel)]="newPosObject.description" required="true"></ion-input>
+            </ion-item>
+
+            <!--<ion-item>
+              <ion-icon name="search" item-left></ion-icon>
+              <ion-input type="text" placeholder="Department" name="department" [(ngModel)]="newPosObject.department" (input)="searchDepartment($event)"></ion-input>
+            </ion-item>-->
+
+            <ion-grid class="inner-addon">
+              <ion-row>
+                <ion-col col-1 class="pad0 left-addon">
+                  <div>
+                    <ion-icon name="search"></ion-icon>
+                  </div>
+                </ion-col>
+                <ion-col class="pad0" col-11 class="input-addon">
+                  <div>
+                    <ion-input type="text" placeholder="Department" name="department" [(ngModel)]="newPosObject.department" (input)="searchDepartment($event)"></ion-input>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-list *ngIf="showList" class='autocomplete-list'>
+              <ion-col col-1>
+              </ion-col>
+              <ion-item *ngFor="let departments of newDepartmentList" class='autocomplete-item radius-0' (click)="selectDepartment($event,departments)">
+                {{ departments.department_name }}
+              </ion-item>
+            </ion-list>
+
+            <ion-item>
+              <ion-col col-1>
+              </ion-col>
+              <ion-input type="number" placeholder="Price" name="new_price" [(ngModel)]="newPosObject.new_price" required="true"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-col col-1>
+              </ion-col>
+              <ion-label>Tax</ion-label>
+              <ion-select name="tax" [(ngModel)]="newPosObject.tax">
+                <ion-option value="Y">Taxable</ion-option>
+                <ion-option value="N">Non Taxable</ion-option>
+              </ion-select>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="action-col">
+          <button ion-button class="success-btn" type="submit" [disabled]="!posForm.valid">Submit</button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
+</ion-content>
